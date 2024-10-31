@@ -1,3 +1,4 @@
+import random
 # Create a game that allows players to choose between multiple characters
 # and fight against each other. The game should have a simple combat system
 # where characters can deal damage to each other. The game should also have
@@ -17,6 +18,13 @@
 # The game should have a way to restart the game.
 
 # The game should have a way to exit the game.
+from player import Player
+
+
+stacy = Player("Stacy", 25, 15, 120)
+kim = Player("Kim", 25, 15, 120)
+wallace = Player("Wallace", 25, 15, 120)
+ramona = Player("Ramona", 25, 15, 120)
 
 class Game:
     def __init__(self):
@@ -27,13 +35,66 @@ class Game:
         and allow them to select a character,
         then have the computer choose a character at random
         It should randomly select a player to go first"""
-        pass
+        self.player_turn = random.choice([True, False])
+        characters = [stacy, kim, wallace, ramona]
+        moves = ["Acid", "Fire", "Punch", "Slam"]
+        selecting = True
 
-    def turn(self, current_turn):
+        while selecting:
+            print(f"Choose your characters! \n{characters}")
+            selection = input("What character would you like to choose? ").title()
+            if selection == "Stacy" :
+                print("You have chosen Stacy!")
+                p1 = stacy
+                selecting = False
+            elif selection == "Kim":
+                print("You have chosen Kim!")
+                p1 = kim
+                selecting = False
+            elif selection == "Wallace" :
+                print("You have chosen Wallace!")
+                p1 = wallace
+                selecting = False
+            elif selection == "Ramona" :
+                print("You have chosen Ramona!")
+                p1 = ramona
+                selecting = False
+            else:
+                print("That's not a character, Try again!")
+    
+            self.p1 = p1
+            characters.remove(p1)
+            self.player2 = random.choice(characters)
+            player2 = self.player2
+            print(f"Player 2 has chosen {player2}!")
+        
+        
+
+
+
+
+
+
+
+    def turn(self):
         """This method should show the current health of both players, 
         and allow the player to select a move to use on the opponent
         If it is the computer player's turn, it should select a move at random"""
-        pass
+        
+        if self.player_turn:
+            print(self.p1.attacks)
+            move = input("Choose your attack: ")
+            pass
+            if move == "quit":
+                self.exit()
+            elif move == "r" or move == "reset":
+                self.playing = False
+        self.player_turn = not self.player_turn
+            
+        p2_move = random.sample(self.attacks(), 1)
+
+        if self.player2_turn:
+            print(f"{self.player2} picked {self.player2.attacks}")
 
     def check_winner(self):
         """This method should check if either player's health has reached 0
@@ -46,8 +107,22 @@ class Game:
 
     def exit(self):
         """This method should allow the player to exit the game"""
-        pass
 
-    
+    def run(self):
+        self.player_turn = True
+        self.player2_turn = True
+        self.playing = True
+        while self.playing:
+            self.turn()
+            self.check_winner()
+
+            
+
+
 def main():
-    pass
+    playing = True
+    while playing:
+        game = Game()
+        game.run()
+
+main()
